@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,6 +45,7 @@ public class AttributeServiceImpl implements AttributeService {
         Attribute attribute;
 
         if (attributeDTO.getId() == null || attributeDTO.getId() == 0) {
+            // INSERT case
             attribute = new Attribute();
             attribute.setCreatedAt(LocalDateTime.now());
             attribute.setUpdatedAt(LocalDateTime.now());
@@ -74,8 +77,15 @@ public class AttributeServiceImpl implements AttributeService {
 
     @Override
     public List<AttributeDTO.GetAttributeDTO> findByMedicineId(Long medicineId) {
-        return attributeRepository.findByMedicineId(medicineId)
-                .stream()
+        // Gọi repository để lấy thuộc tính theo medicineId
+        List<Attribute> attributes = attributeRepository.findByMedicineId(medicineId);
+
+        if (attributes.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Chuyển đổi thành DTO và trả về
+        return attributes.stream()
                 .map(attributeMapper::toGetAttributeDTO)
                 .collect(Collectors.toList());
     }
@@ -87,6 +97,43 @@ public class AttributeServiceImpl implements AttributeService {
                 attributeRepository.softDelete(id);
             }
         }
-        return "Deleted Successfully";
+        return "Đã xóa thành công " + ids.size() + " thuộc tính";
+    }
+
+    @Override
+    @Transactional
+    public List<AttributeDTO.GetAttributeDTO> saveOrUpdateAll(List<AttributeDTO.SaveAttributeDTO> attributeDTOs) {
+        if (attributeDTOs == null || attributeDTOs.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<AttributeDTO.GetAttributeDTO> savedAttributes = new ArrayList<>();
+
+        for (AttributeDTO.SaveAttributeDTO attributeDTO : attributeDTOs) {
+            AttributeDTO.GetAttributeDTO savedAttribute = saveOrUpdate(attributeDTO);
+            savedAttributes.add(savedAttribute);
+        }
+
+        return savedAttributes;
+    }
+
+    @Override
+    @Transactional
+    public String deleteAllByMedicineId(Long medicineId) {
+        if (!medicineRepository.existsById(medicineId)) {
+            throw new RuntimeException("Không tìm thấy thuốc với ID: " + medicineId);
+        }
+
+        // Đếm số thuộc tính trước khi xóa
+        long count = attributeRepository.countByMedicineId(medicineId);
+
+        if (count == 0) {
+            return "Không có thuộc tính nào để xóa";
+        }
+
+        // Thực hiện xóa mềm các thuộc tính
+        attributeRepository.softDeleteByMedicineId(medicineId);
+
+        return "Đã xóa thành công " + count + " thuộc tính của thuốc";
     }
 }
