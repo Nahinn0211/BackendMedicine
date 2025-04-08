@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận dịch vụ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .content {
+            padding: 30px;
+        }
+        .service-info {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .service-details {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: #856404;
+        }
+        .status-confirmed {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-cancelled {
+            background-color: #dc3545;
+            color: white;
+        }
+        .footer {
+            background-color: #f1f3f5;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                border-radius: 0;
+            }
+            .content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Xác Nhận Dịch Vụ</h1>
+    </div>
+    <div class="content">
+        <p>Kính gửi <strong th:text="${name}">Khách hàng</strong>,</p>
+
+        <div class="service-info">
+            <p><strong>Dịch Vụ:</strong> <span th:text="${serviceName}">Dịch Vụ Y Tế</span></p>
+            <p><strong>Ngày Đặt Lịch:</strong> <span th:text="${bookingDate}">01/01/2025</span></p>
+            <p><strong>Ngày Hẹn:</strong> <span th:text="${appointmentDate} + ' ' + ${appointmentTime}">02/01/2025 10:00</span></p>
+            <p><strong>Bác Sĩ:</strong> <span th:text="${doctorName}">Nguyễn Văn A</span></p>
+            <p>
+                <strong>Trạng Thái:</strong>
+                <span class="status" th:classappend="${'status-' + status.toLowerCase()}" th:text="${status}">Đang chờ</span>
+            </p>
+            <p><strong>Phương Thức Thanh Toán:</strong> <span th:text="${paymentMethod}">Tiền mặt</span></p>
+        </div>
+
+        <div class="service-details">
+            <h3>Chi Tiết Dịch Vụ</h3>
+            <p><strong>Tổng Chi Phí:</strong> <span th:text="${totalPrice}">500,000 VNĐ</span></p>
+        </div>
+
+        <p>Cảm ơn bạn đã sử dụng dịch vụ tại THAPV Pharmacity. Chúng tôi rất mong được phục vụ quý khách.</p>
+    </div>
+    <div class="footer">
+        <p>© 2025 THAPV Pharmacity. Bảo lưu mọi quyền.</p>
+        <p>Hotline: (028) 1234 5678 | Email: support@thapvpharmacity.com</p>
+    </div>
+</div>
+</body>
+</html>
