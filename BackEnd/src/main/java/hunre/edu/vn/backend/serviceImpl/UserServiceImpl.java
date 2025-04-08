@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean isUserInRole(Long userId, String roleName) {
-        return userRepository.findById(userId)
+        return userRepository.findActiveById(userId)
                 .map(user -> user.getRoles().stream()
                         .anyMatch(role -> role.getName().equals(roleName)))
                 .orElse(false);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
         // Lưu người dùng
         User savedUser = userRepository.save(userDtoToEntity(userDTO));
-        Optional<Role> roleOptional = roleRepository.findById(3L);
+        Optional<Role> roleOptional = roleRepository.findActiveById(3L);
         Role role = roleOptional.orElseThrow(() -> new RuntimeException("Không tìm thấy vai trò"));
 
         UserRole userRole = new UserRole();
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO.GetUserDTO> findAll() {
-        return userRepository.findAll()
+        return userRepository.findAllActive()
                 .stream()
                 .map(userMapper::toGetUserDTO)
                 .collect(Collectors.toList());
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO.GetUserDTO> findById(Long id) {
-        return userRepository.findById(id)
+        return userRepository.findActiveById(id)
                 .map(userMapper::toGetUserDTO);
     }
 
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
             }
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         } else {
-            user = userRepository.findById(userDTO.getId())
+            user = userRepository.findActiveById(userDTO.getId())
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userDTO.getId()));
 
             if (!user.getEmail().equals(userDTO.getEmail()) &&
@@ -324,7 +324,7 @@ public class UserServiceImpl implements UserService {
                     "https://graph.facebook.com/me?fields=id,name,email&access_token=%s",
                     facebookAccessToken
             );
-            
+
             String email = ""; // Retrieve from Facebook response
             String fullName = ""; // Retrieve from Facebook response
 
@@ -370,7 +370,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO.GetUserDTO> changePassword(String oldPassword, String newPassword, Long id) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findActiveById(id).get();
         if (passwordEncoder.matches(oldPassword, user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
         }

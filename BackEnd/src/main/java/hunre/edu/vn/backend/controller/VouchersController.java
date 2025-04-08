@@ -36,7 +36,7 @@ public class VouchersController {
         return ResponseEntity.ok(savedVoucher);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteVoucher(@RequestBody List<Long> ids) {
         return voucherService.deleteByList(ids);
     }
