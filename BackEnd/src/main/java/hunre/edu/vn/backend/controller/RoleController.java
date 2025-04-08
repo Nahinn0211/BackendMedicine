@@ -36,7 +36,7 @@ public class RoleController {
         return ResponseEntity.ok(savedRole);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteRole(@RequestBody List<Long> ids) {
         return roleService.deleteByList(ids);
     }

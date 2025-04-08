@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,9 +64,11 @@ public class UserDTO {
         @Email(message = "Email không hợp lệ")
         @NotBlank(message = "Email không được để trống")
         private String email;
+        @Nullable
         private String password;
         private String phone;
         private String address;
+        @Nullable
         private String avatar;
         private Boolean enabled;
         private Boolean locked;

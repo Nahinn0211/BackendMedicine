@@ -58,6 +58,7 @@ public class UserController {
     public ResponseEntity<UserDTO.GetUserDTO> saveOrUpdateUserAlternative(
             @RequestPart("user") String userJson,
             @RequestPart(value = "file", required = false) MultipartFile file){
+        System.out.println("Check");
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             UserDTO.SaveUserDTO userDto = objectMapper.readValue(userJson, UserDTO.SaveUserDTO.class);
@@ -102,7 +103,7 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "User deleted successfully"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteUser(@RequestBody List<Long> ids) {
         return userService.deleteByList(ids);
     }

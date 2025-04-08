@@ -27,7 +27,7 @@ public class VouchersServiceImpl implements VouchersService {
 
     @Override
     public List<VoucherDTO.GetVoucherDTO> findAll() {
-        return VouchersRepository.findAll()
+        return VouchersRepository.findAllActive()
                 .stream()
                 .map(vouchersMapper::toGetDTO)
                 .collect(Collectors.toList());
@@ -35,7 +35,7 @@ public class VouchersServiceImpl implements VouchersService {
 
     @Override
     public Optional<VoucherDTO.GetVoucherDTO> findById(Long id) {
-        return VouchersRepository.findById(id).map(vouchersMapper::toGetDTO);
+        return VouchersRepository.findActiveById(id).map(vouchersMapper::toGetDTO);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class VouchersServiceImpl implements VouchersService {
             voucher.setUpdatedAt(LocalDateTime.now());
         } else {
             // UPDATE case
-            Optional<Voucher> existingVouchers = VouchersRepository.findById(VoucherDTO.getId());
+            Optional<Voucher> existingVouchers = VouchersRepository.findActiveById(VoucherDTO.getId());
             if (existingVouchers.isEmpty()) {
                 throw new RuntimeException("Vouchers not found with ID: " + VoucherDTO.getId());
             }
@@ -75,7 +75,6 @@ public class VouchersServiceImpl implements VouchersService {
                 voucherRepository.softDelete(id);
             }
         }
-
         return "Đã xóa " + ids.size() + " mã giảm giá";
     }
 
