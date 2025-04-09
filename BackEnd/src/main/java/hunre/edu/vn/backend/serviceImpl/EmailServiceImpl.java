@@ -187,6 +187,7 @@ public class EmailServiceImpl implements EmailService {
             Context context = new Context();
             context.setVariable("name", user.getFullName());
             context.setVariable("resetLink", buildResetPasswordUrl(resetToken));
+            context.setVariable("token", resetToken);
 
             String emailContent = templateEngine.process("password-reset-template", context);
             helper.setText(emailContent, true);

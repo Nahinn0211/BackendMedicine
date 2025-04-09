@@ -22,7 +22,7 @@ public interface UserService {
     String uploadAvatar(MultipartFile file) throws IOException;
     void deleteAvatar(String avatar);
     Optional<UserDTO.GetUserDTO> changePassword(String oldPassword, String newPassword, Long id);
-
+    Optional<UserDTO.GetUserDTO> uploadImage(Long id, MultipartFile file) throws IOException;
     UserDTO.GetUserDTO register(UserDTO.SaveUserDTO userDTO);
 
     String login(String email, String password);
