@@ -47,7 +47,32 @@ public class ServiceBookingServiceImpl implements ServiceBookingService {
         this.doctorProfileRepository = doctorProfileRepository;
         this.consultationRepository = consultationRepository;
     }
+    @Override
+    @Transactional
+    public ServiceBookingDTO.GetServiceBookingDTO updateStatusAndPrice(Long id, BookingStatus status, BigDecimal totalPrice) {
+        // Tìm ServiceBooking theo id
+        ServiceBooking serviceBooking = serviceBookingRepository.findActiveById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đặt lịch với ID: " + id));
 
+        // Cập nhật status nếu được cung cấp
+        if (status != null) {
+            serviceBooking.setStatus(status);
+        }
+
+        // Cập nhật totalPrice nếu được cung cấp
+        if (totalPrice != null) {
+            serviceBooking.setTotalPrice(totalPrice);
+        }
+
+        // Cập nhật thời gian cập nhật
+        serviceBooking.setUpdatedAt(LocalDateTime.now());
+
+        // Lưu thay đổi
+        ServiceBooking updatedBooking = serviceBookingRepository.save(serviceBooking);
+
+        // Trả về DTO
+        return serviceBookingMapper.toGetServiceBookingDTO(updatedBooking);
+    }
     @Override
     public List<ServiceBookingDTO.DetailedServiceBookingDto> findAllWithDetails() {
         return serviceBookingRepository.findAllActive()

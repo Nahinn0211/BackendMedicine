@@ -3,6 +3,7 @@ package hunre.edu.vn.backend.service;
 import hunre.edu.vn.backend.dto.ServiceBookingDTO;
 import hunre.edu.vn.backend.entity.BookingStatus;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,4 +23,6 @@ public interface ServiceBookingService {
     List<ServiceBookingDTO.DetailedServiceBookingDto> findByPatientIdWithDetails(Long patientId);
     List<ServiceBookingDTO.DetailedServiceBookingDto> findByStatusWithDetails(BookingStatus status);
     String cancelServiceBooking(Long id);
+
+    ServiceBookingDTO.GetServiceBookingDTO updateStatusAndPrice(Long id, BookingStatus status, BigDecimal totalPrice);
 }

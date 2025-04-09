@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,50 @@ public class ServiceBookingController {
     public ResponseEntity<List<ServiceBookingDTO.GetServiceBookingDTO>> getServiceBookingsByStatus(@PathVariable BookingStatus status) {
         List<ServiceBookingDTO.GetServiceBookingDTO> bookings = serviceBookingService.findByStatus(status);
         return ResponseEntity.ok(bookings);
+    }
+    @PutMapping("/{id}/status-price")
+    public ResponseEntity<?> updateStatusAndPrice(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updateData) {
+        try {
+            // Lấy status từ request body
+            BookingStatus status = null;
+            if (updateData.containsKey("status")) {
+                try {
+                    status = BookingStatus.valueOf(updateData.get("status").toString());
+                } catch (IllegalArgumentException e) {
+                    return ResponseEntity.badRequest().body("Trạng thái không hợp lệ: " + updateData.get("status"));
+                }
+            }
+
+            // Lấy totalPrice từ request body
+            BigDecimal totalPrice = null;
+            if (updateData.containsKey("totalPrice")) {
+                try {
+                    if (updateData.get("totalPrice") instanceof Number) {
+                        totalPrice = BigDecimal.valueOf(((Number) updateData.get("totalPrice")).doubleValue());
+                    } else {
+                        totalPrice = new BigDecimal(updateData.get("totalPrice").toString());
+                    }
+                } catch (NumberFormatException e) {
+                    return ResponseEntity.badRequest().body("Giá không hợp lệ: " + updateData.get("totalPrice"));
+                }
+            }
+
+            // Yêu cầu ít nhất một trường để cập nhật
+            if (status == null && totalPrice == null) {
+                return ResponseEntity.badRequest().body("Phải cung cấp ít nhất một trường để cập nhật (status hoặc totalPrice)");
+            }
+
+            // Thực hiện cập nhật
+            ServiceBookingDTO.GetServiceBookingDTO updatedBooking = serviceBookingService.updateStatusAndPrice(id, status, totalPrice);
+            return ResponseEntity.ok(updatedBooking);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi cập nhật: " + e.getMessage());
+        }
     }
 
     @GetMapping("/getUserServiceBookings")
