@@ -41,7 +41,6 @@ public class ConsultationDTO {
         private String sessionToken;
         private String rtcSessionId;
         private List<ChatMessageDTO.GetChatMessageDTO> recentMessages;
-
         // Related entities DTOs
         private PatientProfileDTO.GetPatientProfileDTO patient;
         private DoctorProfileDTO.GetDoctorProfileDTO doctor;
