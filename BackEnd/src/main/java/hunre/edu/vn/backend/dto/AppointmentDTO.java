@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +32,7 @@ public class AppointmentDTO {
         private ServiceBookingDTO.GetServiceBookingDTO serviceBooking;
         private DoctorProfileDTO.GetDoctorProfileDTO doctor;
         private ConsultationDTO.GetConsultationDTO consultation;
+        private List<PrescriptionDTO.GetPrescriptionDTO> prescriptions;
         private LocalDate appointmentDate;
         private LocalTime appointmentTime;
         private AppointmentStatus status;
@@ -110,10 +112,12 @@ public class AppointmentDTO {
                         DoctorProfileDTO.fromEntity(appointment.getDoctor()) : null)
                 .consultation(appointment.getConsultation() != null ?
                         ConsultationDTO.fromEntity(appointment.getConsultation()) : null)
+                .prescriptions(appointment.getPrescriptions() != null ?
+                        PrescriptionDTO.fromEntity(appointment.getPrescriptions()) : null)
                 .appointmentDate(appointment.getAppointmentDate())
                 .appointmentTime(appointment.getAppointmentTime())
                 .status(appointment.getStatus())
-                 .createdAt(appointment.getCreatedAt())
+                .createdAt(appointment.getCreatedAt())
                 .updatedAt(appointment.getUpdatedAt())
                 .build();
     }
