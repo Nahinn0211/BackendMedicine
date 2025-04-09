@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -39,12 +40,37 @@ public class ServiceController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * API để lưu hoặc cập nhật dịch vụ và đồng thời liên kết với nhiều bác sĩ
+     */
+    @PostMapping(value = "/save-with-doctors", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> saveOrUpdateServiceWithDoctors(
+            @RequestPart("serviceWithDoctors") String serviceWithDoctorsJson,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ServiceDTO.ServiceWithDoctorsDTO serviceWithDoctorsDTO = objectMapper.readValue(
+                    serviceWithDoctorsJson, ServiceDTO.ServiceWithDoctorsDTO.class);
+
+            Map<String, Object> result = serviceService.saveOrUpdateServiceWithDoctors(serviceWithDoctorsDTO, file);
+
+            return ResponseEntity.ok(result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi lưu dịch vụ và liên kết bác sĩ: " + e.getMessage());
+        }
+    }
+
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ServiceDTO.GetServiceDTO> saveOrUpdateService(@RequestPart("service") String serviceJson,@RequestPart(value = "file", required = true) MultipartFile file) {
+    public ResponseEntity<ServiceDTO.GetServiceDTO> saveOrUpdateService(
+            @RequestPart("service") String serviceJson,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ServiceDTO.SaveServiceDTO serviceDto = objectMapper.readValue(serviceJson, ServiceDTO.SaveServiceDTO.class);
-            System.out.println(serviceDto);
+
             if (serviceDto.getId() != null) {
                 Optional<ServiceDTO.GetServiceDTO> existingServiceOpt = serviceService.findById(serviceDto.getId());
                 if (existingServiceOpt.isPresent()) {
@@ -86,5 +112,11 @@ public class ServiceController {
     public ResponseEntity<List<ServiceDTO.GetServiceDTO>> getServicesByName(@RequestParam String name) {
         List<ServiceDTO.GetServiceDTO> services = serviceService.findByName(name);
         return ResponseEntity.ok(services);
+    }
+
+    @GetMapping("/{id}/doctors")
+    public ResponseEntity<List<Long>> getDoctorIdsByServiceId(@PathVariable Long id) {
+        List<Long> doctorIds = serviceService.getDoctorIdsByServiceId(id);
+        return ResponseEntity.ok(doctorIds);
     }
 }

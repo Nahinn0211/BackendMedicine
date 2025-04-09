@@ -24,6 +24,12 @@ public class DoctorServiceServiceImpl implements DoctorServiceService {
         this.doctorServiceRepository = doctorServiceRepository;
         this.doctorServiceMapper = doctorServiceMapper;
     }
+
+    @Override
+    public DoctorServiceDTO.GetDoctorServiceDTO convertToDTO(DoctorService doctorService) {
+        return doctorServiceMapper.toGetDoctorServiceDTO(doctorService);
+    }
+
     @Override
     public List<DoctorServiceDTO.GetDoctorServiceDTO> findByServiceId(Long serviceId) {
         List<DoctorService> doctorServices = doctorServiceRepository.findByService_Id(serviceId);
@@ -39,6 +45,7 @@ public class DoctorServiceServiceImpl implements DoctorServiceService {
 
         return doctorServiceDtos;
     }
+
     @Override
     public List<DoctorServiceDTO.GetDoctorServiceDTO> findAll() {
         return doctorServiceRepository.findAll().stream()

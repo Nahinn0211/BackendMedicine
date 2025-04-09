@@ -1,6 +1,7 @@
 package hunre.edu.vn.backend.service;
 
 import hunre.edu.vn.backend.dto.DoctorServiceDTO;
+import hunre.edu.vn.backend.entity.DoctorService;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,4 +13,7 @@ public interface DoctorServiceService {
     String deleteByList(List<Long> ids);
     List<DoctorServiceDTO.GetDoctorServiceDTO> findByDoctorId(Long doctorId);
     List<DoctorServiceDTO.GetDoctorServiceDTO> findByServiceId(Long serviceId);
+
+    // Chuyển đổi từ entity sang DTO
+    DoctorServiceDTO.GetDoctorServiceDTO convertToDTO(DoctorService doctorService);
 }

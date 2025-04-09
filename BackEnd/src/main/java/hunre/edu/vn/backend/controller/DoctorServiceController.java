@@ -86,7 +86,7 @@ public class DoctorServiceController {
         return ResponseEntity.ok(updatedService);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteDoctorService(@RequestBody List<Long> ids) {
         return doctorServiceService.deleteByList(ids);
     }
