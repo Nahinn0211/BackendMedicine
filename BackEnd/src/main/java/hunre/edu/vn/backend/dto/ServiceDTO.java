@@ -3,6 +3,7 @@ package hunre.edu.vn.backend.dto;
 import hunre.edu.vn.backend.entity.DoctorService;
 import hunre.edu.vn.backend.entity.Service;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceDTO{
+public class ServiceDTO {
     private String name;
 
     @Data
@@ -44,11 +45,35 @@ public class ServiceDTO{
 
         private String image;
 
-        @NotBlank(message = "Giá dịch vụ không được trống")
+        @NotNull(message = "Giá dịch vụ không được trống")
         private BigDecimal price;
         private String description;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ServiceWithDoctorsDTO {
+        private Long id;
+
+        @NotBlank(message = "Tên dịch vụ không được trống")
+        private String name;
+
+        private String image;
+
+        @NotNull(message = "Giá dịch vụ không được trống")
+        private BigDecimal price;
+
+        private String description;
+
+        private LocalDateTime createdAt;
+
+        private LocalDateTime updatedAt;
+
+        private List<Long> doctorIds; // Danh sách ID các bác sĩ được liên kết với dịch vụ này
     }
 
     // Static method to convert Entity to DTO

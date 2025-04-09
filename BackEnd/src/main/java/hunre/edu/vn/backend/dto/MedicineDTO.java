@@ -72,6 +72,8 @@ public class MedicineDTO {
         private List<Long> attributeIds;
         private List<Long> categoryIds;
         private List<Long> mediaIds;
+        private List<AttributeDTO.SaveAttributeDTO> attributes;
+
     }
 
     public static GetMedicineDTO fromEntity(Medicine medicine) {

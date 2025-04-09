@@ -45,7 +45,7 @@ public class AttributeController {
         return ResponseEntity.ok(savedAttribute);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteAttribute(@RequestBody List<Long> ids) {
         return attributeService.deleteByList(ids);
     }

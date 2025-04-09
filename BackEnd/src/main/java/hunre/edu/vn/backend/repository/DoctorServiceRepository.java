@@ -13,16 +13,14 @@ import java.util.Optional;
 
 @Repository
 public interface DoctorServiceRepository extends BaseRepository<DoctorService> {
+
     @Query("SELECT ds FROM DoctorService as ds WHERE ds.doctor.id = :doctorId AND ds.isDeleted = false")
     List<DoctorService> findByDoctor_Id(Long doctorId);
+
     @Query("SELECT ds FROM DoctorService as ds WHERE ds.service.id = :serviceId AND ds.isDeleted = false")
     List<DoctorService> findByService_Id(Long serviceId);
-//    @Modifying
-//    void deleteByService_Id(Long serviceId);
-//    @Modifying
-//    void deleteByDoctor_Id(Long doctorId);
-//    @Query("SELECT ds.doctor.id FROM DoctorService ds WHERE ds.service.id = :serviceId")
-//    List<Long> findDoctorIdsByServiceId(@Param("serviceId") Long serviceId);
-//    @Query("SELECT ds.service.id FROM DoctorService ds WHERE ds.doctor.id = :doctorId")
-//    List<Long> findServiceIdsByDoctorId(@Param("doctorId") Long doctorId);
+
+    // Tìm tất cả liên kết bác sĩ-dịch vụ cho một dịch vụ, bao gồm cả những bản ghi đã bị soft delete
+    @Query("SELECT ds FROM DoctorService as ds WHERE ds.service.id = :serviceId")
+    List<DoctorService> findByService_IdIncludingDeleted(@Param("serviceId") Long serviceId);
 }
