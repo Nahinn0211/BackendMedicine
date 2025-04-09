@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * DTO Class for Prescription
@@ -67,25 +69,32 @@ public class PrescriptionDTO {
     }
 
     public static GetPrescriptionDTO fromEntity(Prescription prescription) {
-        if (prescription == null) {
-            return null;
-        }
+        if (prescription == null) return null;
 
         return GetPrescriptionDTO.builder()
                 .id(prescription.getId())
-                .doctor(DoctorProfileDTO.fromEntity(prescription.getDoctor()))
-                .patient(PatientProfileDTO.fromEntity(prescription.getPatient()))
-                .appointment(AppointmentDTO.fromEntity(prescription.getAppointment()))
-                .medicine(MedicineDTO.fromEntity(prescription.getMedicine()))
+                .doctorId(prescription.getDoctor() != null ?
+                        prescription.getDoctor().getId() : null)
+                .patientId(prescription.getPatient() != null ?
+                        prescription.getPatient().getId() : null)
+                .medicineId(prescription.getMedicine() != null ?
+                        prescription.getMedicine().getId() : null)
+                .appointmentId(prescription.getAppointment() != null ?
+                        prescription.getAppointment().getId() : null)
                 .dosage(prescription.getDosage())
                 .prescriptionDate(prescription.getPrescriptionDate())
                 .expiryDate(prescription.getExpiryDate())
                 .notes(prescription.getNotes())
                 .status(prescription.getStatus())
-                .isValid(prescription.isValid())
-                .isNearingExpiry(prescription.isNearingExpiry())
                 .createdAt(prescription.getCreatedAt())
                 .updatedAt(prescription.getUpdatedAt())
                 .build();
+    }
+
+    public static List<GetPrescriptionDTO> fromEntity(List<Prescription> prescriptions) {
+        if (prescriptions == null) return null;
+        return prescriptions.stream()
+                .map(PrescriptionDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 }

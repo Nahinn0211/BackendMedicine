@@ -7,12 +7,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
-        uses = {PatientProfileMapper.class, DoctorProfileMapper.class, ServiceBookingMapper.class, ConsultationMapper.class},
+        uses = {PatientProfileMapper.class, DoctorProfileMapper.class, ServiceBookingMapper.class,
+                ConsultationMapper.class, PrescriptionMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AppointmentMapper {
     @Mapping(target = "patient", source = "patient")
     @Mapping(target = "doctor", source = "doctor")
     @Mapping(target = "serviceBooking", source = "serviceBooking")
+    @Mapping(target = "prescriptions", source = "prescriptions")
     @Mapping(target = "consultation.appointment", ignore = true)
     AppointmentDTO.GetAppointmentDTO toGetAppointmentDTO(Appointment entity);
 

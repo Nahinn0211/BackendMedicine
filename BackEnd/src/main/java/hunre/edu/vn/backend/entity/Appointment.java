@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "appointments")
@@ -38,6 +40,10 @@ public class Appointment extends BaseEntity {
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ToString.Exclude
     private Consultation consultation;
+
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private List<Prescription> prescriptions = new ArrayList<>();
 
     @NotNull(message = "Ngày hẹn không được trống")
     @Future(message = "Ngày hẹn phải là ngày trong tương lai")
