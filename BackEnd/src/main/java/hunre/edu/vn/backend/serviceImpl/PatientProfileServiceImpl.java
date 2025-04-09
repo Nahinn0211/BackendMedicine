@@ -108,7 +108,13 @@ public class PatientProfileServiceImpl implements PatientProfileService {
                 BigDecimal newBalance = new BigDecimal(cleanedBalance);
 
                 PatientProfile patientProfile = existingProfile.get();
-                patientProfile.setAccountBalance(newBalance);
+
+                // Sử dụng phương thức add() thay vì toán tử +
+                BigDecimal currentBalance = patientProfile.getAccountBalance();
+                if (currentBalance == null) {
+                    currentBalance = BigDecimal.ZERO;
+                }
+                patientProfile.setAccountBalance(currentBalance.add(newBalance));
 
                 PatientProfile updatedPatientProfile = patientProfileRepository.save(patientProfile);
                 return Optional.of(patientProfileMapper.toGetPatientProfileDTO(updatedPatientProfile));
@@ -119,6 +125,7 @@ public class PatientProfileServiceImpl implements PatientProfileService {
             return Optional.empty();
         }
     }
+
     @Override
     public Long getTotalPatients() {
         return patientProfileRepository.count();

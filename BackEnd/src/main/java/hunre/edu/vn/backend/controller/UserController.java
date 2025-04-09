@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -158,6 +159,23 @@ public class UserController {
         }
 
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @PostMapping("/{id}/upload")
+    public ResponseEntity<?> uploadImage(
+            @PathVariable Long id,
+            @RequestPart("file") MultipartFile file
+    ) {
+        try {
+            Optional<UserDTO.GetUserDTO> userDTO = userService.uploadImage(id, file);
+            return userDTO
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi upload ảnh");
+        }
     }
 
     @Operation(summary = "Get users by locked status", description = "Returns users filtered by locked status")

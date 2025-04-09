@@ -225,6 +225,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<UserDTO.GetUserDTO> uploadImage(Long id, MultipartFile file) throws IOException {
+        // Kiểm tra file có rỗng không
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("File ảnh không được để trống");
+        }
+
+        Optional<User> userOptional = userRepository.findActiveById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            try {
+                if (user.getAvatar() != null && !user.getAvatar().trim().isEmpty()) {
+                    this.s3Service.deleteFile(user.getAvatar());
+                    user.setAvatar(this.s3Service.uploadFile(file));
+                    userRepository.save(user);
+                }else{
+                    user.setAvatar(this.s3Service.uploadFile(file));
+                    userRepository.save(user);
+                }
+            } catch (Exception e) {
+                throw new ServiceException("Không thể upload ảnh", e);
+            }
+        }
+
+        // Trả về optional rỗng nếu không tìm thấy user
+        return Optional.empty();
+    }
+
+    @Override
     public void deleteAvatar(String avatar) {
         s3Service.deleteFile(avatar);
     }
