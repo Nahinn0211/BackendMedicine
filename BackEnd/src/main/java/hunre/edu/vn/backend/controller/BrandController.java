@@ -77,7 +77,7 @@ public class BrandController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteBrand(@RequestBody List<Long> ids) {
         return brandService.deleteByList(ids);
     }

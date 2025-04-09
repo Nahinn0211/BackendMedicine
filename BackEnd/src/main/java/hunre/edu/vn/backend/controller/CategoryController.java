@@ -75,7 +75,7 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteCategory(@RequestBody List<Long> ids) {
         return categoryService.deleteByList(ids);
     }

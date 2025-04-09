@@ -53,7 +53,7 @@ public class PatientProfileController {
         return ResponseEntity.ok(savedProfile);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @Operation(summary = "Delete patient profile")
     public String deleteProfile(@RequestBody List<Long> ids) {
         return patientProfileService.deleteByList(ids);

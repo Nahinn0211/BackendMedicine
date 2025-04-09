@@ -103,7 +103,7 @@ public class ServiceController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteService(@RequestBody List<Long> ids) {
         return serviceService.deleteByList(ids);
     }
