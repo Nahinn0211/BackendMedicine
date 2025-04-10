@@ -15,7 +15,6 @@ public interface AppointmentMapper {
     @Mapping(target = "doctor", source = "doctor")
     @Mapping(target = "serviceBooking", source = "serviceBooking")
     @Mapping(target = "prescriptions", source = "prescriptions")
-    @Mapping(target = "consultation.appointment", ignore = true)
     AppointmentDTO.GetAppointmentDTO toGetAppointmentDTO(Appointment entity);
 
     Appointment toEntity(AppointmentDTO.SaveAppointmentDTO dto);

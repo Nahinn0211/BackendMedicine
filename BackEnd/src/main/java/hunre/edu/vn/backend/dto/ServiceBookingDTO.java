@@ -28,8 +28,6 @@ public class ServiceBookingDTO {
         private Long doctorId;
         private Long patientId;
         private ServiceDTO.GetServiceDTO service;
-        private DoctorProfileDTO.GetDoctorProfileDTO doctor;
-        private PatientProfileDTO.GetPatientProfileDTO patient;
         private BigDecimal totalPrice;
         private String paymentMethod;
         private String status;
@@ -73,8 +71,6 @@ public class ServiceBookingDTO {
         return GetServiceBookingDTO.builder()
                 .id(serviceBooking.getId())
                 .service(ServiceDTO.fromEntity(serviceBooking.getService()))
-                .doctor(DoctorProfileDTO.fromEntity(serviceBooking.getDoctor()))
-                .patient(PatientProfileDTO.fromEntity(serviceBooking.getPatient()))
                 .totalPrice(serviceBooking.getTotalPrice())
                 .paymentMethod(serviceBooking.getPaymentMethod() != null ?
                         serviceBooking.getPaymentMethod().name() : null)

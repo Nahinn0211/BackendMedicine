@@ -168,13 +168,24 @@ public class UserController {
     ) {
         try {
             Optional<UserDTO.GetUserDTO> userDTO = userService.uploadImage(id, file);
+
+            // Xử lý Optional đúng cách
             return userDTO
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+                    .map(dto -> {
+                        System.out.println("Upload successful: " + dto);
+                        return ResponseEntity.ok(dto);
+                    })
+                    .orElseGet(() -> {
+                        System.out.println("User not found with id: " + id);
+                        return ResponseEntity.notFound().build();
+                    });
         } catch (IllegalArgumentException e) {
+            System.out.println("Bad request: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi upload ảnh");
+            e.printStackTrace(); // In stack trace đầy đủ để debug
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi upload ảnh: " + e.getMessage());
         }
     }
 
