@@ -30,10 +30,25 @@ public class PatientProfileServiceImpl implements PatientProfileService {
         this.userRepository = userRepository;
         this.patientProfileMapper = patientProfileMapper;
     }
+    @Override
+    @Transactional
+    public Optional<PatientProfileDTO.GetPatientProfileDTO> toggleLockStatus(Long id, boolean isLocked) {
+        Optional<PatientProfile> existingProfile = patientProfileRepository.findById(id);
 
+        if (existingProfile.isPresent()) {
+            PatientProfile patientProfile = existingProfile.get();
+            patientProfile.setIsDeleted(isLocked);
+            patientProfile.setUpdatedAt(LocalDateTime.now());
+
+            PatientProfile updatedPatientProfile = patientProfileRepository.save(patientProfile);
+            return Optional.of(patientProfileMapper.toGetPatientProfileDTO(updatedPatientProfile));
+        } else {
+            return Optional.empty();
+        }
+    }
     @Override
     public List<PatientProfileDTO.GetPatientProfileDTO> findAll() {
-        return patientProfileRepository.findAllActive()
+        return patientProfileRepository.findAll()
                 .stream()
                 .map(patientProfileMapper::toGetPatientProfileDTO)
                 .collect(Collectors.toList());
@@ -41,7 +56,7 @@ public class PatientProfileServiceImpl implements PatientProfileService {
 
     @Override
     public Optional<PatientProfileDTO.GetPatientProfileDTO> findById(Long id) {
-        return patientProfileRepository.findActiveById(id)
+        return patientProfileRepository.findById(id)
                 .map(patientProfileMapper::toGetPatientProfileDTO);
     }
 

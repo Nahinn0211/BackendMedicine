@@ -13,4 +13,5 @@ public interface PatientProfileService {
     Optional<PatientProfileDTO.GetPatientProfileDTO> findByUserId(Long UserId);
     Optional<PatientProfileDTO.GetPatientProfileDTO> updateBalance(Long id, String balance);
     Long getTotalPatients();
+    Optional<PatientProfileDTO.GetPatientProfileDTO> toggleLockStatus(Long id, boolean isLocked);
 }

@@ -22,7 +22,15 @@ public class PatientProfileController {
         List<PatientProfileDTO.GetPatientProfileDTO> profiles = patientProfileService.findAll();
         return ResponseEntity.ok(profiles);
     }
-
+    @PutMapping("/toggle-lock/{id}")
+    @Operation(summary = "Toggle lock status of patient profile")
+    public ResponseEntity<PatientProfileDTO.GetPatientProfileDTO> toggleLockStatus(
+            @PathVariable Long id,
+            @RequestParam boolean isLocked) {
+        return patientProfileService.toggleLockStatus(id, isLocked)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
     @GetMapping("/total")
     @Operation(summary = "Get total number of patients")
     public ResponseEntity<Long> getTotalPatients() {

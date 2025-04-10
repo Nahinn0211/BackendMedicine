@@ -12,6 +12,7 @@ public interface PatientProfileMapper {
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "createdAt", source = "createdAt")
     @Mapping(target = "updatedAt", source = "updatedAt")
+    @Mapping(target = "isDeleted", source = "isDeleted")
     PatientProfileDTO.GetPatientProfileDTO toGetPatientProfileDTO(PatientProfile entity);
 
     PatientProfile toPatientProfileEntity(PatientProfileDTO.SavePatientProfileDTO dto);

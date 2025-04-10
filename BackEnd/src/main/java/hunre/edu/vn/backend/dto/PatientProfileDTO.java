@@ -33,6 +33,8 @@ public class PatientProfileDTO {
         private Boolean hasAllergies;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+        private Boolean isDeleted ;
+
     }
 
     @Data
@@ -79,6 +81,7 @@ public class PatientProfileDTO {
                 .completedConsultationsCount(patientProfile.getCompletedConsultationsCount())
                 .hasMedicalHistory(patientProfile.hasMedicalHistory())
                 .hasAllergies(patientProfile.hasAllergies())
+                .isDeleted(patientProfile.getIsDeleted())
                 .build();
     }
 
