@@ -20,28 +20,28 @@ import java.util.List;
 
 public class Appointment extends BaseEntity {
     @NotNull(message = "Bệnh nhân không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "patient_id", nullable = false)
     private PatientProfile patient;
 
     @NotNull(message = "Booking dịch vụ không được trống")
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "service_booking_id", nullable = false)
     private ServiceBooking serviceBooking;
 
     @NotNull(message = "Bác sĩ không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "doctor_id", nullable = false)
     private DoctorProfile doctor;
 
-    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private Consultation consultation;
 
-    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Prescription> prescriptions = new ArrayList<>();
 

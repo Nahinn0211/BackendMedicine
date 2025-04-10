@@ -26,18 +26,18 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Consultation extends BaseEntity {
     @NotNull(message = "Bệnh nhân không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "patient_id", nullable = false)
     private PatientProfile patient;
 
     @NotNull(message = "Bác sĩ không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "doctor_id", nullable = false)
     private DoctorProfile doctor;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "appointment_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)

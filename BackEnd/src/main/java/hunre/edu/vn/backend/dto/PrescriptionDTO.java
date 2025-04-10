@@ -27,9 +27,6 @@ public class PrescriptionDTO {
         private Long doctorId;
         private Long appointmentId;
         private Long medicineId;
-        private DoctorProfileDTO.GetDoctorProfileDTO doctor;
-        private PatientProfileDTO.GetPatientProfileDTO patient;
-        private AppointmentDTO.GetAppointmentDTO appointment;
         private MedicineDTO.GetMedicineDTO medicine;
         private String dosage;
         private LocalDateTime prescriptionDate;
@@ -73,14 +70,8 @@ public class PrescriptionDTO {
 
         return GetPrescriptionDTO.builder()
                 .id(prescription.getId())
-                .doctorId(prescription.getDoctor() != null ?
-                        prescription.getDoctor().getId() : null)
-                .patientId(prescription.getPatient() != null ?
-                        prescription.getPatient().getId() : null)
                 .medicineId(prescription.getMedicine() != null ?
                         prescription.getMedicine().getId() : null)
-                .appointmentId(prescription.getAppointment() != null ?
-                        prescription.getAppointment().getId() : null)
                 .dosage(prescription.getDosage())
                 .prescriptionDate(prescription.getPrescriptionDate())
                 .expiryDate(prescription.getExpiryDate())
