@@ -11,9 +11,6 @@ public interface ConsultationMapper {
     @Mapping(target = "doctorId", source = "doctor.id")
     @Mapping(target = "patientId", source = "patient.id")
     @Mapping(target = "appointmentId", source = "appointment.id")
-    @Mapping(target = "appointment", ignore = true)
-    @Mapping(target = "doctor", ignore = true)
-    @Mapping(target = "patient", ignore = true)
     ConsultationDTO.GetConsultationDTO toGetConsultationDTO(Consultation entity);
 
     Consultation toEntity(ConsultationDTO.SaveConsultationDTO dto);

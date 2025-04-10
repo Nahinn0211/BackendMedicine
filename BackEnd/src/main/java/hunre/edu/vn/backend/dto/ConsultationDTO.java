@@ -41,10 +41,6 @@ public class ConsultationDTO {
         private String sessionToken;
         private String rtcSessionId;
         private List<ChatMessageDTO.GetChatMessageDTO> recentMessages;
-        // Related entities DTOs
-        private PatientProfileDTO.GetPatientProfileDTO patient;
-        private DoctorProfileDTO.GetDoctorProfileDTO doctor;
-        private AppointmentDTO.GetAppointmentDTO appointment;
         private List<ChatMessageDTO.GetChatMessageDTO> chatMessages;
     }
 
@@ -86,9 +82,6 @@ public class ConsultationDTO {
                 .isVideoEnabled(consultation.getIsVideoEnabled())
                 .createdAt(consultation.getCreatedAt())
                 .updatedAt(consultation.getUpdatedAt())
-                .patient(PatientProfileDTO.fromEntity(consultation.getPatient()))
-                .doctor(DoctorProfileDTO.fromEntity(consultation.getDoctor()))
-                .appointment(AppointmentDTO.fromEntity(consultation.getAppointment()))
                 .chatMessages(consultation.getChatMessages() != null
                         ? consultation.getChatMessages().stream()
                         .map(ChatMessageDTO::fromEntity)

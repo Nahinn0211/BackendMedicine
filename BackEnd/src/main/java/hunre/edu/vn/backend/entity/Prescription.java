@@ -20,25 +20,25 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class Prescription extends BaseEntity {
     @NotNull(message = "Bác sĩ không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "doctor_id", nullable = false)
     private DoctorProfile doctor;
 
     @NotNull(message = "Bệnh nhân không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "patient_id", nullable = false)
     private PatientProfile patient;
 
     @NotNull(message = "Lịch hẹn không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 
     @NotNull(message = "Thuốc không được trống")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "medicine_id", nullable = false)
     private Medicine medicine;
